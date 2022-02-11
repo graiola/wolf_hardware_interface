@@ -30,7 +30,7 @@ void WolfRobotHwInterface::initializeJointsInterface(const std::vector<std::stri
         ROS_DEBUG_STREAM_NAMED(CLASS_NAME,"Loading joint: "<< joint_names[j]);
 
         joint_names_[j]          = joint_names[j];
-        joint_position_[j]       = 0.0;
+        joint_position_[j]       = 1.0;
         joint_velocity_[j]       = 0.0;
         joint_effort_[j]         = 0.0;  // N/m for continuous joints
         joint_effort_command_[j] = 0.0;
