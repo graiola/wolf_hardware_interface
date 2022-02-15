@@ -5,7 +5,9 @@
   <description>Hardware interface for WoLF</description>
   <maintainer email="gennaro.raiola@gmail.com">Gennaro Raiola</maintainer>
 
-  <license>TODO</license>
+  <license>GNU General Public License v3.0</license>
+
+  <author>Gennaro Raiola</author>
 
   <buildtool_depend>catkin</buildtool_depend>
   <depend>roscpp</depend> 
