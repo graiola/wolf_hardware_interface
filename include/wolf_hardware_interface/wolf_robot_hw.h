@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2022 multidof
- * Author: Gennaro Raiola, Michele Focchi
+ * Copyright (C) 2022 Gennaro Raiola
+ * Author: Gennaro Raiola
  * email:  gennaro.raiola@gmail.com
  *
  * This program is free software: you can redistribute it and/or modify
