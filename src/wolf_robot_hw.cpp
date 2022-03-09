@@ -208,7 +208,7 @@ bool WolfRobotHwInterface::parseSRDF(srdf::Model& srdf_model)
   }
   if(!nh.getParam("/robot_semantic_description",srdf))
   {
-      ROS_ERROR_NAMED(CLASS_NAME,"robot_description_semantic not available in the ros param server");
+      ROS_ERROR_NAMED(CLASS_NAME,"robot_semantic_description not available in the ros param server");
       return false;
   }
 
