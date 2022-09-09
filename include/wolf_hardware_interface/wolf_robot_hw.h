@@ -56,7 +56,7 @@ public:
     std::vector<std::string> loadJointNamesFromSRDF();
     std::string loadImuLinkNameFromSRDF();
     std::string loadBaseLinkNameFromSRDF();
-    std::vector<std::string> loadContactSensorNamesFromSRDF();
+    std::vector<std::string> loadContactNamesFromSRDF();
 
 protected:
 

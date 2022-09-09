@@ -100,8 +100,11 @@ void WolfRobotHwInterface::initializeGroundTruthInterface(const std::string& bas
 
 void WolfRobotHwInterface::initializeContactSensorsInterface(const std::vector<std::string>& contact_names)
 {
+     // Note the _contact_sensor here, this is appended because
+     // of the fact that we are using the SRDF file to get on which link the contact sensors
+     // are mounted
      for(unsigned int i=0;i<contact_names.size();i++)
-        contact_sensor_names_.push_back(contact_names[i]);
+        contact_sensor_names_.push_back(contact_names[i]+"_contact_sensor");
 
      // Create the handle for each contact sensor,
      contact_.resize(contact_sensor_names_.size());
@@ -114,7 +117,7 @@ void WolfRobotHwInterface::initializeContactSensorsInterface(const std::vector<s
          force_[i].resize(3,0);
          torque_[i].resize(3,0);
          normal_[i].resize(3,0);
-         contact_sensor_interface_.registerHandle(hardware_interface::ContactSwitchSensorHandle(contact_sensor_names_[i], &contact_[i], &force_[i][0], &torque_[i][0], &normal_[i][0]));
+         contact_sensor_interface_.registerHandle(hardware_interface::ContactSwitchSensorHandle(contact_names[i], &contact_[i], &force_[i][0], &torque_[i][0], &normal_[i][0]));
      }
 }
 
@@ -178,7 +181,7 @@ std::string WolfRobotHwInterface::loadBaseLinkNameFromSRDF()
     return base_name;
 }
 
-std::vector<std::string> WolfRobotHwInterface::loadContactSensorNamesFromSRDF()
+std::vector<std::string> WolfRobotHwInterface::loadContactNamesFromSRDF()
 {
     std::vector<std::string> contact_names;
     srdf::Model srdf_model;
@@ -188,7 +191,7 @@ std::vector<std::string> WolfRobotHwInterface::loadContactSensorNamesFromSRDF()
         for(unsigned int i=0;i < groups.size(); i++)
         {
             const auto& links  = groups[i].links_;
-            if(groups[i].name_.find("contact_sensors") != std::string::npos)
+            if(groups[i].name_.find("contacts") != std::string::npos)
                 for(unsigned int j=0;j<links.size();j++)
                     contact_names.push_back(links[j]);
 
