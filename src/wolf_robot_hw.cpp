@@ -27,8 +27,18 @@ WolfRobotHwInterface::WolfRobotHwInterface()
 {
 }
 
+WolfRobotHwInterface::WolfRobotHwInterface(const std::string& robot_namespace)
+  :nh_(robot_namespace)
+{
+}
+
 WolfRobotHwInterface::~WolfRobotHwInterface()
 {
+}
+
+void WolfRobotHwInterface::setNodeHandle(ros::NodeHandle &nh)
+{
+  nh_ = nh;
 }
 
 void WolfRobotHwInterface::initializeJointsInterface(const std::vector<std::string>& joint_names)
@@ -202,14 +212,13 @@ std::vector<std::string> WolfRobotHwInterface::loadContactNamesFromSRDF()
 
 bool WolfRobotHwInterface::parseSRDF(srdf::Model& srdf_model)
 {
-  ros::NodeHandle nh;
   std::string srdf, urdf;
-  if(!nh.getParam("/robot_description",urdf))
+  if(!nh_.getParam("robot_description",urdf))
   {
       ROS_ERROR_NAMED(CLASS_NAME,"robot_description not available in the ros param server");
       return false;
   }
-  if(!nh.getParam("/robot_description_semantic",srdf))
+  if(!nh_.getParam("robot_description_semantic",srdf))
   {
       ROS_ERROR_NAMED(CLASS_NAME,"robot_description_semantic not available in the ros param server");
       return false;
