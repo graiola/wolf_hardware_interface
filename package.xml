@@ -12,9 +12,9 @@
   <buildtool_depend>catkin</buildtool_depend>
   <depend>roscpp</depend> 
   <depend>hardware_interface</depend> 
-  <depend>transmission_interface</depend>
   <depend>urdf</depend>
-  <depend>srdfdom</depend>
+  <depend>transmission_interface</depend>
+  <depend>wolf_controller_utils</depend>
 
   <export>
     <cpp cflags="-I${prefix}/include"/>

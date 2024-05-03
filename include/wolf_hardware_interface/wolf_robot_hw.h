@@ -26,6 +26,7 @@
 #include <hardware_interface/imu_sensor_interface.h>
 #include <wolf_hardware_interface/ground_truth_interface.h>
 #include <wolf_hardware_interface/contact_switch_sensor_interface.h>
+#include <wolf_controller_utils/srdf_parser.h>
 #include <hardware_interface/force_torque_sensor_interface.h>
 #include <hardware_interface/robot_hw.h>
 #include <transmission_interface/transmission_info.h>
@@ -104,8 +105,7 @@ protected:
 
 private:
 
-    ros::NodeHandle nh_;
-    bool parseSRDF(srdf::Model& srdf_model);
+    wolf_controller_utils::SRDFParser::Ptr srdf_parser_;
 };
 
 } //@namespace hardware_interface
