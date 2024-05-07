@@ -26,21 +26,15 @@ using namespace wolf_controller_utils;
 
 WolfRobotHwInterface::WolfRobotHwInterface()
 {
-  srdf_parser_ = std::make_shared<SRDFParser>();
-}
-
-WolfRobotHwInterface::WolfRobotHwInterface(const std::string& robot_namespace)
-{
-  srdf_parser_ = std::make_shared<SRDFParser>(robot_namespace);
 }
 
 WolfRobotHwInterface::~WolfRobotHwInterface()
 {
 }
 
-void WolfRobotHwInterface::setNodeHandle(ros::NodeHandle &nh)
+void WolfRobotHwInterface::parseSRDF(const std::string& robot_namespace)
 {
-  srdf_parser_->setNodeHandle(nh);
+  srdf_parser_.parseSRDF(robot_namespace);
 }
 
 void WolfRobotHwInterface::initializeJointsInterface(const std::vector<std::string>& joint_names)
@@ -135,20 +129,20 @@ void WolfRobotHwInterface::initializeContactSensorsInterface(const std::vector<s
 
 std::vector<std::string> WolfRobotHwInterface::loadJointNamesFromSRDF()
 {
-  return srdf_parser_->parseJointNames();
+  return srdf_parser_.getJointNames();
 }
 
 std::string WolfRobotHwInterface::loadImuLinkNameFromSRDF()
 {
-  return srdf_parser_->parseImuLinkName();
+  return srdf_parser_.getImuLinkName();
 }
 
 std::string WolfRobotHwInterface::loadBaseLinkNameFromSRDF()
 {
-  return srdf_parser_->parseBaseLinkName();
+  return srdf_parser_.getBaseLinkName();
 }
 
 std::vector<std::string> WolfRobotHwInterface::loadContactNamesFromSRDF()
 {
-  return srdf_parser_->parseContactNames();
+  return srdf_parser_.getContactNames();
 }

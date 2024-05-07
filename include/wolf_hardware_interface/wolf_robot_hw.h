@@ -44,10 +44,9 @@ public:
     const std::string CLASS_NAME = "WolfRobotHwInterface";
 
     WolfRobotHwInterface();
-    WolfRobotHwInterface(const std::string &robot_namespace);
     virtual ~WolfRobotHwInterface();
 
-    void setNodeHandle(ros::NodeHandle& nh);
+    void parseSRDF(const std::string& robot_namespace);
     void initializeJointsInterface(const std::vector<std::string>& joint_names);
     void initializeImuInterface(const std::string& imu_link_name);
     void initializeGroundTruthInterface(const std::string& base_link_name);
@@ -105,7 +104,7 @@ protected:
 
 private:
 
-    wolf_controller_utils::SRDFParser::Ptr srdf_parser_;
+    wolf_controller_utils::SRDFParser srdf_parser_;
 };
 
 } //@namespace hardware_interface
