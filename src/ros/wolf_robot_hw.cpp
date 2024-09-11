@@ -18,8 +18,6 @@
 */
 
 #include <wolf_hardware_interface/wolf_robot_hw.h>
-#include <urdf_parser/urdf_parser.h>
-#include <srdfdom/srdf_writer.h>
 
 using namespace hardware_interface;
 using namespace wolf_controller_utils;

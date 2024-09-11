@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.5)
 project(wolf_hardware_interface)
 
 include(CheckCXXCompilerFlag)
@@ -18,35 +18,52 @@ else()
     message(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++11 nor C++14 support. Please use a different C++ compiler.")
 endif()
 
-find_package(catkin REQUIRED COMPONENTS roscpp hardware_interface urdf transmission_interface wolf_controller_utils)
+# ROS
+find_package(catkin QUIET)
+find_package(ament_cmake QUIET)
+
+if(${catkin_FOUND})
+    set(ROS_VERSION "ros")
+    catkin_package(INCLUDE_DIRS include/${ROS_VERSION} LIBRARIES wolf_robot_hw)
+    add_definitions(-DROS)
+    message(STATUS "Add ROS definition")
+elseif(${ament_cmake_FOUND})
+    set(ROS_VERSION "ros2")
+    ament_export_include_directories(include/${ROS_VERSION})
+    ament_export_libraries(wolf_robot_hw)
+    ament_package()
+    add_definitions(-DROS2)
+    message(STATUS "Add ROS2 definition")
+endif()
+
+find_package(hardware_interface REQUIRED)
+find_package(transmission_interface REQUIRED)
+find_package(wolf_controller_utils REQUIRED)
 
 find_package(PkgConfig)
 pkg_check_modules(EIGEN3 eigen3 REQUIRED)
 
 include_directories(
-  include
-  ${catkin_INCLUDE_DIRS}
+  include/${ROS_VERSION}
+  ${hardware_interface_INCLUDE_DIRS}
+  ${transmission_interface_INCLUDE_DIRS}
+  ${wolf_controller_utils_INCLUDE_DIRS}
   ${EIGEN3_INCLUDE_DIRS}
 )
 
-catkin_package(
-  INCLUDE_DIRS
-    include
-  LIBRARIES
-    wolf_robot_hw
-  CATKIN_DEPENDS
-    wolf_controller_utils
-    urdf
-)
-
-add_library(wolf_robot_hw src/wolf_robot_hw.cpp)
-target_link_libraries(wolf_robot_hw ${catkin_LIBRARIES})
+add_library(wolf_robot_hw src/${ROS_VERSION}/wolf_robot_hw.cpp)
+target_link_libraries(wolf_robot_hw
+    ${hardware_interface_LIBRARIES}
+    ${transmission_interface_LIBRARIES}
+    ${wolf_controller_utils_LIBRARIES})
 
 install(TARGETS wolf_robot_hw
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+    LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+    RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
 )
 
-install(DIRECTORY include/${PROJECT_NAME}/
-  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})
+install(
+  DIRECTORY include/${ROS_VERSION}/${PROJECT_NAME}
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/include
+)
