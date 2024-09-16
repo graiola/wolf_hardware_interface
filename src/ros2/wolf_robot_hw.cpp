@@ -33,13 +33,7 @@ WolfRobotHwInterface::~WolfRobotHwInterface()
 {
 }
 
-hardware_interface::return_type WolfRobotHwInterface::configure(const hardware_interface::HardwareInfo & info)
-{
-    // Perform necessary initializations here
-    return hardware_interface::return_type::OK;
-}
-
-std::vector<hardware_interface::StateInterface> WolfRobotHwInterface::export_state_interfaces()
+std::vector<hardware_interface::StateInterface> WolfRobotHwInterface::exportStateInterfaces()
 {
     std::vector<hardware_interface::StateInterface> state_interfaces;
 
@@ -82,7 +76,7 @@ std::vector<hardware_interface::StateInterface> WolfRobotHwInterface::export_sta
     return state_interfaces;
 }
 
-std::vector<hardware_interface::CommandInterface> WolfRobotHwInterface::export_command_interfaces()
+std::vector<hardware_interface::CommandInterface> WolfRobotHwInterface::exportCommandInterfaces()
 {
     std::vector<hardware_interface::CommandInterface> command_interfaces;
 
@@ -92,31 +86,6 @@ std::vector<hardware_interface::CommandInterface> WolfRobotHwInterface::export_c
     }
 
     return command_interfaces;
-}
-
-hardware_interface::return_type WolfRobotHwInterface::start()
-{
-    // Hardware startup logic if necessary
-    return hardware_interface::return_type::OK;
-}
-
-hardware_interface::return_type WolfRobotHwInterface::stop()
-{
-    // Hardware shutdown logic if necessary
-    return hardware_interface::return_type::OK;
-}
-
-hardware_interface::return_type WolfRobotHwInterface::read()
-{
-    // Update joint states (position, velocity, effort) from hardware or simulation
-    // Update IMU states
-    return hardware_interface::return_type::OK;
-}
-
-hardware_interface::return_type WolfRobotHwInterface::write()
-{
-    // Send commands (effort) to the actuators
-    return hardware_interface::return_type::OK;
 }
 
 void WolfRobotHwInterface::parseSRDF(const std::string& robot_namespace)

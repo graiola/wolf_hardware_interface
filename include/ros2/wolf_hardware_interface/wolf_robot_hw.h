@@ -35,7 +35,7 @@
 namespace hardware_interface
 {
 
-class WolfRobotHwInterface : public hardware_interface::SystemInterface
+class WolfRobotHwInterface
 {
 public:
 
@@ -44,14 +44,8 @@ public:
     WolfRobotHwInterface();
     virtual ~WolfRobotHwInterface();
 
-    // Lifecycle transitions
-    hardware_interface::return_type configure(const hardware_interface::HardwareInfo & info) override;
-    std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
-    std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
-    hardware_interface::return_type start() override;
-    hardware_interface::return_type stop() override;
-    hardware_interface::return_type read() override;
-    hardware_interface::return_type write() override;
+    std::vector<hardware_interface::StateInterface> exportStateInterfaces();
+    std::vector<hardware_interface::CommandInterface> exportCommandInterfaces();
 
     void parseSRDF(const std::string& robot_namespace);
     void initializeJointsInterface(const std::vector<std::string>& joint_names);
