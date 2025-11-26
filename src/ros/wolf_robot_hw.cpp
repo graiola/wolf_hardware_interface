@@ -35,15 +35,17 @@ void WolfRobotHwInterface::parseSRDF(const std::string& robot_namespace)
   srdf_parser_.parseSRDF(robot_namespace);
 }
 
-void WolfRobotHwInterface::initializeJointsInterface(const std::vector<std::string>& joint_names)
+void WolfRobotHwInterface::initializeJointsInterface(const std::vector<std::string>& joint_names, const std::vector<std::string>& joint_interfaces)
 {
   // Resize vectors to our DOF
   n_dof_ = static_cast<unsigned int>(joint_names.size());
   joint_names_.resize(n_dof_);
+  joint_control_methods_.resize(n_dof_);
   joint_types_.resize(n_dof_);
   joint_effort_limits_.resize(n_dof_);
   joint_position_.resize(n_dof_);
   joint_velocity_.resize(n_dof_);
+  joint_velocity_command_.resize(n_dof_);
   joint_effort_.resize(n_dof_);
   joint_effort_command_.resize(n_dof_);
 
@@ -52,17 +54,27 @@ void WolfRobotHwInterface::initializeJointsInterface(const std::vector<std::stri
 
     ROS_DEBUG_STREAM_NAMED(CLASS_NAME,"Loading joint: "<< joint_names[j]);
 
-    joint_names_[j]          = joint_names[j];
-    joint_position_[j]       = 1.0;
-    joint_velocity_[j]       = 0.0;
-    joint_effort_[j]         = 0.0;  // N/m for continuous joints
-    joint_effort_command_[j] = 0.0;
+    joint_names_[j]                  = joint_names[j];
+    joint_position_[j]               = 1.0;
+    joint_velocity_[j]               = 0.0;
+    joint_velocity_command_[j]       = 0.0;
+    joint_effort_[j]                 = 0.0;  // N/m for continuous joints
+    joint_effort_command_[j]         = 0.0;
 
     // Create joint state interface for all joints
     joint_state_interface_.registerHandle(hardware_interface::JointStateHandle(
-                                            joint_names_[j], &joint_position_[j], &joint_velocity_[j], &joint_effort_[j]));
+                                          joint_names_[j], &joint_position_[j], &joint_velocity_[j], &joint_effort_[j]));
 
-    joint_effort_interface_.registerHandle(JointHandle(joint_state_interface_.getHandle(joint_names_[j]), &joint_effort_command_[j]));
+    if(joint_interfaces[j] == "hardware_interface/EffortJointInterface")
+    {
+      joint_control_methods_[j] = EFFORT;
+      joint_effort_interface_.registerHandle(JointHandle(joint_state_interface_.getHandle(joint_names_[j]), &joint_effort_command_[j]));
+    }
+    else if(joint_interfaces[j] == "hardware_interface/VelocityJointInterface")
+    {
+      joint_control_methods_[j] = VELOCITY;
+      joint_velocity_interface_.registerHandle(JointHandle(joint_state_interface_.getHandle(joint_names_[j]), &joint_velocity_command_[j]));
+    }
   }
 }
 

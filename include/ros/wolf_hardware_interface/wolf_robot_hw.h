@@ -46,7 +46,7 @@ public:
     virtual ~WolfRobotHwInterface();
 
     void parseSRDF(const std::string& robot_namespace);
-    void initializeJointsInterface(const std::vector<std::string>& joint_names);
+    void initializeJointsInterface(const std::vector<std::string>& joint_names, const std::vector<std::string>& joint_interfaces);
     void initializeImuInterface(const std::string& imu_link_name);
     void initializeGroundTruthInterface(const std::string& base_link_name);
     void initializeContactSensorsInterface(const std::vector<std::string>& contact_names);
@@ -61,6 +61,9 @@ public:
 
 protected:
 
+    // Methods used to control a joint.
+    enum ControlMethod {EFFORT, VELOCITY};
+
     std::string robot_name_;
 
     hardware_interface::JointStateInterface joint_state_interface_;
@@ -68,14 +71,17 @@ protected:
     hardware_interface::GroundTruthInterface ground_truth_interface_;
     hardware_interface::ContactSwitchSensorInterface contact_sensor_interface_;
     hardware_interface::EffortJointInterface joint_effort_interface_;
+    hardware_interface::VelocityJointInterface joint_velocity_interface_;
 
     unsigned int n_dof_;
     std::vector<std::string> joint_names_;
+    std::vector<ControlMethod> joint_control_methods_;
     std::vector<std::string> contact_sensor_names_;
     std::vector<int> joint_types_;
     std::vector<double> joint_effort_limits_;
     std::vector<double> joint_position_;
     std::vector<double> joint_velocity_;
+    std::vector<double> joint_velocity_command_;
     std::vector<double> joint_effort_;
     std::vector<double> joint_effort_command_;
 
