@@ -6,7 +6,7 @@
   <description>Hardware interface for WoLF</description>
   <maintainer email="gennaro.raiola@gmail.com">Gennaro Raiola</maintainer>
 
-  <license>GNU General Public License v3.0</license>
+  <license>MIT</license>
 
   <author>Gennaro Raiola</author>
 
